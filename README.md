@@ -1,42 +1,57 @@
 # Thermo-AI
 
 ## Overview
-Thermo-AI is a cutting-edge project aimed at optimizing thermodynamic processes using advanced AI algorithms. This project seeks to leverage scientific research to enhance efficiency and sustainability in various industries.
+Thermo-AI is an early-stage research project exploring metabolic agent simulation using Python. The project models simple agents with metabolic constraints and energy dynamics, providing a foundation for future AI-driven optimization of thermodynamic and metabolic processes.
+
+**Current Status:** Pre-alpha (Project initiated 2026-02-07)
 
 ## Core Principles
-1. **Data-Driven Decisions:** Utilize vast amounts of data to inform decisions and optimize processes.
-2. **Sustainability:** Focus on reducing energy waste and promoting eco-friendly practices.
-3. **Innovation:** Continuously evolve our methods through research and development.
+1. **Simulation-Based Learning:** Start with simple agent-based models to understand metabolic dynamics.
+2. **Iterative Development:** Build foundational concepts before scaling to complex thermodynamic optimization.
+3. **Open Research:** Develop transparent, reproducible models for metabolic processes.
 
-## Metabolic Spine
-The Metabolic Spine is a key feature of Thermo-AI, integrating models of metabolic processes with AI to enhance performance and predict outcomes. This allows for deeper insights into thermodynamic systems and enables precise control measures.
+## Project Scope
+This project is in its early research phase. Currently, it includes:
+- A basic Agent class that simulates metabolism (energy consumption over time)
+- Early-stage architecture planning for future thermodynamic models
+- Documentation of project goals and theoretical framework
 
-## Experimental Findings
-Through rigorous testing, we have established significant correlations between AI-driven modeling and real-world results. Our findings indicate a consistent improvement in efficiency metrics across various applications.
+## Getting Started
 
-## Quick Start
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/vanj900/Thermo-AI.git
-   cd Thermo-AI
-   ```
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Run the main application:
-   ```bash
-   python main.py
-   ```
+### Quick Demo
+To see a simple example of the current agent simulation:
 
-## Architecture
-The architecture of Thermo-AI is designed to be modular and scalable, enabling easy integration with existing systems. The key components include:
-- **Data Ingestion Layer:** For collecting and processing data from various sources.
-- **AI Model Training Module:** To develop and refine algorithms for optimized performance.
-- **User Interface:** Providing an intuitive platform for users to interact with the system.
+```bash
+python quickstart.py
+```
+
+This runs a basic demonstration of an agent with metabolic constraints that consumes energy over time until depletion.
+
+### Repository Structure
+- `quickstart.py` - Basic agent simulation demo
+- `src/` - Source code directory (under development)
+- `experiments/` - Experimental scripts and test cases (in progress)
+- `THEORY.md` - Theoretical foundations
+- `PROJECT_SUMMARY.md` - Detailed project summary
+
+## What's Not Yet Implemented
+- AI model training modules
+- Data ingestion systems
+- User interface
+- Thermodynamic process optimization
+- Experimental test results
+- Production-ready code
+
+These features are planned for future releases as the project evolves.
 
 ## Roadmap
-- **Q1 2026:** Release of the beta version.
-- **Q2 2026:** Expand experimental studies and publish results.
-- **Q3 2026:** Enhance user documentation and tutorials.
-- **Q4 2026:** Launch full version with advanced features.
+- **Current (Q1 2026):** Establish basic agent simulation and project structure
+- **Near-term:** Develop foundational metabolic models
+- **Mid-term:** Integrate AI/ML for process optimization
+- **Long-term:** Production-ready thermodynamic optimization suite
+
+## Contributing
+This is an early-stage research project. Contributions are welcome as we develop the foundational concepts.
+
+## License
+[Add license information]
