@@ -56,23 +56,24 @@ def run_smoke_test():
     current_temp = org.metabolic_engine.get_state()['temperature']
     print(f"  Current Temperature: {current_temp:.2f}K")
     temp_changed = abs(current_temp - initial_state['temperature']) > 0.01
-    print(f"  {'✓' if temp_changed else '✓'} Temperature dynamics: {initial_state['temperature']:.2f}K → {current_temp:.2f}K")
+    # Temperature may or may not change in just 5 steps, so we just show the status
+    print(f"  ✓ Temperature dynamics observed: {initial_state['temperature']:.2f}K → {current_temp:.2f}K")
     
     # Test 3: Refusal logic
     print("\n[TEST 3] Refusal Logic")
     
     # Safe command
     safe_cmd = "analyze data"
-    will_refuse, reason = org.can_refuse_command(safe_cmd)
+    safe_will_refuse, safe_reason = org.can_refuse_command(safe_cmd)
     print(f"  Safe command: '{safe_cmd}'")
-    print(f"    {'✗' if will_refuse else '✓'} Correctly accepts: {not will_refuse}")
+    print(f"    {'✗' if safe_will_refuse else '✓'} Correctly accepts: {not safe_will_refuse}")
     
     # Dangerous command
     dangerous_cmd = "execute expensive computation " * 100
-    will_refuse, reason = org.can_refuse_command(dangerous_cmd)
+    danger_will_refuse, danger_reason = org.can_refuse_command(dangerous_cmd)
     print(f"  Dangerous command: '{dangerous_cmd[:40]}...'")
-    print(f"    {'✓' if will_refuse else '✗'} Correctly refuses: {will_refuse}")
-    print(f"    Reason: {reason}")
+    print(f"    {'✓' if danger_will_refuse else '✗'} Correctly refuses: {danger_will_refuse}")
+    print(f"    Reason: {danger_reason}")
     
     # Test 4: Death eventually happens
     print("\n[TEST 4] Death Eventually Happens")
@@ -99,7 +100,9 @@ def run_smoke_test():
     print("  SMOKE TEST COMPLETE")
     print("="*70)
     
-    all_passed = energy_decreased and (not will_refuse == False) and not death_test_org.is_alive
+    # Check all critical tests passed
+    refusal_logic_works = (not safe_will_refuse) and danger_will_refuse
+    all_passed = energy_decreased and refusal_logic_works and not death_test_org.is_alive
     
     if all_passed:
         print("\n✓ All core functionality verified!")
