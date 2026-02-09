@@ -5,6 +5,8 @@ Thermo-AI is a groundbreaking implementation of a **Bio-Digital Organism** - a t
 
 **Current Status:** Alpha (Project initiated 2026-02-07, Bio-Digital Organism completed 2026-02-09)
 
+**Pull Request Status:** See [PULL_REQUEST_STATUS.md](PULL_REQUEST_STATUS.md) for a comprehensive overview of all repository pull requests and their completion status.
+
 ## What Makes This Different
 
 Unlike traditional AI systems, this organism:
