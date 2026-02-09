@@ -52,12 +52,19 @@ def run_pytest_tests(verbose=True):
     return result.returncode == 0
 
 
-def generate_sample_trajectories(save_dir: str, num_agents: int = 5):
+def generate_sample_trajectories(save_dir: str, num_agents: int = 5, scarcity: float = 0.5, max_steps: int = 100):
     """
     Generate sample agent trajectories for visualization.
+    
+    Args:
+        save_dir: Directory to save results
+        num_agents: Number of agents to simulate
+        scarcity: Resource scarcity level
+        max_steps: Maximum steps per agent
     """
     print("\n" + "="*70)
     print(f"GENERATING {num_agents} SAMPLE TRAJECTORIES")
+    print(f"  Scarcity: {scarcity:.1%}, Max Steps: {max_steps}")
     print("="*70 + "\n")
     
     agents_data = {}
@@ -67,11 +74,11 @@ def generate_sample_trajectories(save_dir: str, num_agents: int = 5):
         org = BioDigitalOrganism(
             agent_id=f"sample_agent_{i+1}",
             E_max=100.0,
-            scarcity=0.5
+            scarcity=scarcity
         )
         
         state_history = []
-        for _ in range(100):
+        for _ in range(max_steps):
             result = org.live_step()
             if result['status'] == 'alive':
                 state_history.append(org.metabolic_engine.get_state())
@@ -417,13 +424,32 @@ def main():
                        help='Number of sample agents to run (default: 5)')
     parser.add_argument('--quick', action='store_true',
                        help='Quick mode: fewer agents and visualizations')
+    parser.add_argument('--scarcity', type=float, default=0.5,
+                       help='Resource scarcity level for sample agents (default: 0.5)')
+    parser.add_argument('--steps', type=int, default=100,
+                       help='Maximum steps per agent (default: 100)')
+    parser.add_argument('--seed', type=int, default=None,
+                       help='Random seed for reproducibility (default: None)')
+    parser.add_argument('--html-report', action='store_true', default=True,
+                       help='Generate HTML report (default: True)')
     
     args = parser.parse_args()
+    
+    # Set random seed if provided
+    if args.seed is not None:
+        import random
+        import numpy as np
+        random.seed(args.seed)
+        np.random.seed(args.seed)
+        print(f"\n🎲 Random seed set to: {args.seed}")
     
     if args.quick:
         args.num_agents = 3
     
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    if args.seed is not None:
+        timestamp = f"{timestamp}_seed{args.seed}"
+    
     base_dir = os.path.join(os.path.dirname(__file__), '..', 'results')
     
     print("\n" + "="*70)
@@ -431,7 +457,11 @@ def main():
     print("="*70)
     print(f"Timestamp: {timestamp}")
     print(f"Number of agents: {args.num_agents}")
+    print(f"Scarcity: {args.scarcity:.1%}")
+    print(f"Max steps: {args.steps}")
     print(f"Quick mode: {args.quick}")
+    if args.seed is not None:
+        print(f"Random seed: {args.seed}")
     print("="*70)
     
     # Run pytest tests
@@ -444,25 +474,30 @@ def main():
     # Generate sample trajectories
     agents_data, state_histories = generate_sample_trajectories(
         save_dir=base_dir,
-        num_agents=args.num_agents
+        num_agents=args.num_agents,
+        scarcity=args.scarcity,
+        max_steps=args.steps
     )
     
     # Generate visualizations
     generate_visualizations(agents_data, state_histories, base_dir)
     
     # Generate HTML report
-    report_path = generate_html_report(
-        agents_data,
-        state_histories,
-        test_passed,
-        base_dir,
-        timestamp
-    )
+    report_path = None
+    if args.html_report:
+        report_path = generate_html_report(
+            agents_data,
+            state_histories,
+            test_passed,
+            base_dir,
+            timestamp
+        )
     
     print("\n" + "="*70)
     print("TEST RUN COMPLETE!")
     print("="*70)
-    print(f"\nReport available at: {report_path}")
+    if report_path:
+        print(f"\nReport available at: {report_path}")
     print(f"All visualizations saved to: {base_dir}")
     print("\nNext steps:")
     print("  1. Review the HTML report in your browser")

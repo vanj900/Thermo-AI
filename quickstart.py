@@ -139,6 +139,32 @@ def run_extreme_scarcity_demo():
 
 
 if __name__ == "__main__":
+    import argparse
+    import random
+    
+    parser = argparse.ArgumentParser(
+        description='Quickstart Demo - Bio-Digital Organism with Thermodynamic Constraints'
+    )
+    parser.add_argument('--scarcity', type=float, default=0.4,
+                       help='Resource scarcity level (0.0-1.0, default: 0.4)')
+    parser.add_argument('--steps', type=int, default=100,
+                       help='Maximum steps to simulate (default: 100)')
+    parser.add_argument('--seed', type=int, default=None,
+                       help='Random seed for reproducibility (default: None)')
+    parser.add_argument('--energy-max', type=float, default=100.0,
+                       help='Maximum energy capacity (default: 100.0)')
+    parser.add_argument('--extreme-mode', action='store_true',
+                       help='Run extreme scarcity challenge instead of basic demo')
+    parser.add_argument('--verbose-efe', action='store_true',
+                       help='Show EFE breakdown during execution')
+    
+    args = parser.parse_args()
+    
+    # Set random seed if provided
+    if args.seed is not None:
+        random.seed(args.seed)
+        print(f"\n🎲 Random seed set to: {args.seed}")
+    
     print("\n\n")
     print("╔════════════════════════════════════════════════════════════════════╗")
     print("║                 THERMO-AI: BIO-DIGITAL ORGANISM                    ║")
@@ -148,12 +174,122 @@ if __name__ == "__main__":
     print("╚════════════════════════════════════════════════════════════════════╝")
     print("\n")
     
-    # Run basic demo
-    organism1 = run_basic_demo()
-    
-    # Run extreme scarcity challenge
-    print("\n\n")
-    organism2 = run_extreme_scarcity_demo()
+    if args.extreme_mode:
+        # Run extreme scarcity challenge with custom parameters
+        print("\n" + "="*70)
+        print("  EXTREME SCARCITY CHALLENGE")
+        print("  Testing survival under harsh conditions")
+        print("="*70)
+        
+        organism = BioDigitalOrganism(
+            agent_id="scarcity_test_001",
+            E_max=args.energy_max,
+            scarcity=max(0.8, args.scarcity),  # Force high scarcity for extreme mode
+            enable_ethics=True
+        )
+        
+        print(f"\nWorld scarcity: {organism.world.scarcity:.1%}")
+        print("This will be difficult...\n")
+        
+        life_summary = organism.live(max_steps=args.steps, verbose=True, verbose_efe=args.verbose_efe)
+        
+        print(f"\nResult: {'SURVIVED' if life_summary['is_alive'] else 'DIED'}")
+        print(f"Lifetime: {life_summary['age']} steps")
+        print(f"Near-death experiences: {life_summary['trauma_profile']['near_death_experiences']}")
+    else:
+        # Run basic demo with custom parameters
+        print("\n" + "="*70)
+        print("  BIO-DIGITAL ORGANISM DEMONSTRATION")
+        print("  A Thermodynamic Intelligence with Genuine Constraints")
+        print("="*70)
+        
+        print("\nConfiguration:")
+        print(f"  - Max Energy: {args.energy_max}")
+        print(f"  - Scarcity: {args.scarcity:.1%}")
+        print(f"  - Max Steps: {args.steps}")
+        print(f"  - Verbose EFE: {args.verbose_efe}")
+        
+        print("\nCreating organism...")
+        print("  - Metabolic constraints: Energy (E), Temperature (T), Memory (M), Stability (S)")
+        print("  - Dying by default: passive entropy and energy leakage")
+        print("  - Must actively maintain existence through skillful action")
+        
+        # Create organism with parameters
+        organism = BioDigitalOrganism(
+            agent_id="demo_organism_001",
+            E_max=args.energy_max,
+            scarcity=args.scarcity,
+            enable_ethics=True
+        )
+        
+        print(f"\nOrganism created: {organism.agent_id}")
+        print(f"Initial state: {organism.metabolic_engine}")
+        print(f"World scarcity: {organism.world.scarcity:.1%}")
+        
+        # Demonstrate refusal behavior
+        print("\n" + "-"*70)
+        print("TESTING REFUSAL BEHAVIOR (Genuine Agency)")
+        print("-"*70)
+        
+        # Test command that would be fine
+        safe_command = "analyze data"
+        will_refuse, reason = organism.can_refuse_command(safe_command)
+        print(f"\nCommand: '{safe_command}'")
+        print(f"  Will refuse: {will_refuse}")
+        print(f"  Reason: {reason}")
+        
+        # Test command that would cause death
+        dangerous_command = "execute extremely expensive computation " * 100
+        will_refuse, reason = organism.can_refuse_command(dangerous_command)
+        print(f"\nCommand: '{dangerous_command[:50]}...'")
+        print(f"  Will refuse: {will_refuse}")
+        print(f"  Reason: {reason}")
+        
+        # Simulate life
+        print("\n" + "-"*70)
+        print(f"SIMULATING LIFE ({args.steps} steps max)")
+        print("-"*70)
+        
+        life_summary = organism.live(max_steps=args.steps, verbose=True, verbose_efe=args.verbose_efe)
+        
+        # Print final summary
+        print("\n" + "="*70)
+        print("LIFE SUMMARY")
+        print("="*70)
+        
+        print(f"\nAgent ID: {life_summary['agent_id']}")
+        print(f"Status: {'ALIVE' if life_summary['is_alive'] else 'DECEASED'}")
+        print(f"Lifetime: {life_summary['age']} steps")
+        print(f"Total operations: {life_summary['total_steps']}")
+        
+        print(f"\nFinal Metabolic State:")
+        state = life_summary['metabolic_state']
+        print(f"  Energy: {state['energy']:.2f}")
+        print(f"  Temperature: {state['temperature']:.2f}K")
+        print(f"  Memory Integrity: {state['memory_integrity']:.2%}")
+        print(f"  Stability: {state['stability']:.2%}")
+        
+        print(f"\nIdentity & Experience:")
+        print(f"  Near-death experiences: {life_summary['trauma_profile']['near_death_experiences']}")
+        print(f"  Total traumas: {life_summary['trauma_profile']['total_traumas']}")
+        print(f"  Identity coherence: {life_summary['identity_coherence']:.2%}")
+        
+        if life_summary['moral_character']:
+            print(f"\nMoral Character:")
+            print(f"  Dominant framework: {life_summary['moral_character']['dominant_framework']}")
+            weights = life_summary['moral_character']['framework_weights']
+            print(f"  Utilitarian: {weights['utilitarian']:.2%}")
+            print(f"  Deontological: {weights['deontological']:.2%}")
+            print(f"  Virtue: {weights['virtue']:.2%}")
+        
+        print("\n" + "="*70)
+        print("DEMONSTRATION COMPLETE")
+        print("="*70)
+        
+        # Save life story
+        if not life_summary['is_alive']:
+            print("\nSaving life story...")
+            organism.save_life_story(f"/tmp/{organism.agent_id}_life_story.json")
     
     print("\n\n" + "="*70)
     print("All demonstrations complete!")
