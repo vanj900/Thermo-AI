@@ -123,5 +123,14 @@ The completed PRs represent substantial work on the core functionality of the Th
 ## Action Items
 
 1. ✅ Document PR status (this report)
-2. ⏭️ Consider closing abandoned PRs #3-9
+2. ⏭️ Close abandoned PRs #3-9 (see [HOW_TO_CLOSE_PRS.md](HOW_TO_CLOSE_PRS.md) for instructions)
 3. ⏭️ Complete current PR #11 with this documentation
+
+## How to Close the Abandoned PRs
+
+See **[HOW_TO_CLOSE_PRS.md](HOW_TO_CLOSE_PRS.md)** for detailed step-by-step instructions on closing PRs #3-9.
+
+**Quick options:**
+- **GitHub Web UI**: Visit each PR and click "Close pull request" button
+- **GitHub CLI**: Run `gh pr close <number> --repo vanj900/Thermo-AI`
+- **Automated Script**: Run `./scripts/close_abandoned_prs.sh` (requires GitHub CLI)
