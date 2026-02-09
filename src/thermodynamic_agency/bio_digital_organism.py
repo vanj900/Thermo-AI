@@ -81,7 +81,7 @@ class BioDigitalOrganism:
             significance=1.0
         )
     
-    def live_step(self) -> Dict[str, Any]:
+    def live_step(self, verbose_efe: bool = False) -> Dict[str, Any]:
         """
         Execute one complete life cycle step.
         
@@ -93,6 +93,9 @@ class BioDigitalOrganism:
         5. Updates beliefs
         6. Experiences entropy
         7. Records its narrative
+        
+        Args:
+            verbose_efe: If True, print EFE breakdown during active inference
         
         Returns:
             Dictionary with step results
@@ -123,7 +126,7 @@ class BioDigitalOrganism:
                 )
         
         # Active Inference step (includes passive decay)
-        step_result = self.active_inference.step(self.world)
+        step_result = self.active_inference.step(self.world, verbose_efe=verbose_efe)
         
         # Advance world
         self.world.step()
@@ -160,13 +163,14 @@ class BioDigitalOrganism:
             'step_result': step_result
         }
     
-    def live(self, max_steps: int = 100, verbose: bool = True) -> Dict[str, Any]:
+    def live(self, max_steps: int = 100, verbose: bool = True, verbose_efe: bool = False) -> Dict[str, Any]:
         """
         Live for multiple steps until death or max_steps.
         
         Args:
             max_steps: Maximum number of steps to simulate
             verbose: Print progress
+            verbose_efe: Print EFE breakdown during active inference
             
         Returns:
             Summary of life
@@ -179,7 +183,7 @@ class BioDigitalOrganism:
             print(f"{'='*60}\n")
         
         for step in range(max_steps):
-            result = self.live_step()
+            result = self.live_step(verbose_efe=verbose_efe)
             
             if verbose and step % 10 == 0:
                 print(f"Step {step}: {self.metabolic_engine}")
