@@ -38,12 +38,13 @@ class ActiveInferenceLoop:
         self.decisions = []
         self.step_count = 0
     
-    def step(self, environment) -> Dict[str, Any]:
+    def step(self, environment, verbose_efe: bool = False) -> Dict[str, Any]:
         """
         Execute one complete active inference cycle.
         
         Args:
             environment: The environment to interact with
+            verbose_efe: If True, print EFE breakdown for debugging
             
         Returns:
             Dictionary with step results
@@ -72,6 +73,20 @@ class ActiveInferenceLoop:
         
         # 5. Select action minimizing EFE
         chosen_action = min(efe_scores, key=lambda a: efe_scores[a]['efe'])
+        
+        # Print EFE breakdown if verbose
+        if verbose_efe:
+            print(f"\n[EFE BREAKDOWN - Step {self.step_count}]")
+            print(f"  Evaluating {len(possible_actions)} actions:")
+            for action in possible_actions[:5]:  # Show top 5
+                scores = efe_scores[action]
+                print(f"    Action: {str(action)[:50]}")
+                print(f"      Pragmatic Value: {scores['pragmatic']:.3f}")
+                print(f"      Epistemic Value: {scores['epistemic']:.3f}")
+                print(f"      Action Cost: {scores['cost']:.3f}")
+                print(f"      Total EFE: {scores['efe']:.3f}")
+                if action == chosen_action:
+                    print(f"      >>> SELECTED <<<")
         
         # 6. Execute action
         outcome = self._execute_action(chosen_action, environment)
