@@ -80,6 +80,43 @@ This tests:
 - **Refusal Behavior**: Agent refuses commands that threaten survival
 - **Identity Formation**: Unique narratives through random traumatic events
 
+### Validation & Comprehensive Testing
+
+Run the complete validation suite with automated testing and visualization:
+
+```bash
+# Quick validation (3 agents, essential visualizations)
+python experiments/run_emergence_tests.py --quick
+
+# Full test suite (10 agents, all visualizations)
+python experiments/run_emergence_tests.py --num-agents 10
+
+# Run comprehensive test suite with pytest
+pytest tests/emergence_tests.py -v
+
+# Parameter tuning to find optimal configurations
+python experiments/parameter_tuning.py
+```
+
+**What gets tested:**
+- ✓ All death mechanics (energy, thermal, entropy, memory collapse)
+- ✓ Φ (Integrated Information) emergence
+- ✓ Behavioral divergence from identical initial conditions
+- ✓ Parameter sensitivity analysis
+- ✓ Long-term survival under various scarcity levels
+- ✓ Ethical framework evolution through near-death experiences
+- ✓ Command refusal behavior
+
+**Output includes:**
+- Comprehensive HTML report with metrics and visualizations
+- Energy/temperature/memory/stability trajectories
+- Survival curves and lifetime analysis
+- Entropy dynamics and thermodynamic efficiency plots
+- Bifurcation analysis showing behavioral divergence
+- Parameter tuning recommendations
+
+See [results/README.md](results/README.md) for detailed interpretation of results.
+
 ## Usage Examples
 
 ### Creating a Simple Organism
@@ -162,12 +199,84 @@ Thermo-AI/
 │   └── bio_digital_organism.py      # Layer 5: Integration
 ├── experiments/                     # Experimental scripts
 │   ├── emergence_test.py            # Emergence demonstrations
+│   ├── parameter_tuning.py          # Grid search for optimal parameters
+│   ├── run_emergence_tests.py       # Automated test runner
 │   └── step4_identity_divergence.py # Legacy experiments
+├── tests/                           # Comprehensive test suite
+│   └── emergence_tests.py           # Pytest-based validation tests
+├── results/                         # Experimental results and visualizations
+│   ├── trajectories/                # Energy, temperature, memory, stability plots
+│   ├── bifurcations/                # Divergence and decision analysis
+│   ├── entropy/                     # Thermodynamic efficiency plots
+│   ├── survival/                    # Survival curves and lifetime analysis
+│   ├── tuning/                      # Parameter optimization results
+│   ├── emergence_reports/           # HTML test reports
+│   ├── notebooks/                   # Jupyter notebooks for analysis
+│   └── README.md                    # Results interpretation guide
+├── config/                          # Experiment configurations
+│   └── experiment_configs.yaml      # Standard test parameters
 ├── quickstart.py                    # Quick demonstration
+├── requirements.txt                 # Python dependencies
 ├── ARCHITECTURE.md                  # Detailed architecture
 ├── THEORY.md                        # Theoretical foundations
 └── README.md                        # This file
 ```
+
+## Visualization & Analysis
+
+The system includes comprehensive visualization tools for analyzing emergent behavior:
+
+### Energy Trajectories
+Track all four metabolic state variables (E, T, M, S) over time:
+```python
+from thermodynamic_agency.visualization import plot_energy_trajectory
+
+# Plot single agent trajectory with death markers
+plot_energy_trajectory(
+    state_history=state_history,
+    agent_id="organism_1",
+    death_step=95,
+    save_path="results/trajectories/trajectory.png"
+)
+```
+
+### Multi-Agent Comparison
+Compare multiple agents to observe divergence:
+```python
+from thermodynamic_agency.visualization import plot_multi_agent_comparison
+
+# Compare energy levels across agents
+plot_multi_agent_comparison(
+    agent_histories={'agent1': history1, 'agent2': history2},
+    variable='energy',
+    save_path="results/trajectories/comparison.png"
+)
+```
+
+### Survival Analysis
+Generate Kaplan-Meier survival curves:
+```python
+from thermodynamic_agency.visualization import plot_survival_curves
+
+plot_survival_curves(
+    survival_data={'baseline': lifetimes_baseline, 'stress': lifetimes_stress},
+    save_path="results/survival/curves.png"
+)
+```
+
+### Metrics Calculation
+Quantify emergent properties:
+```python
+from thermodynamic_agency.metrics import calculate_phi, calculate_divergence_index
+
+# Φ (Integrated Information)
+phi = calculate_phi(state_history, window_size=20)
+
+# Behavioral divergence
+divergence = calculate_divergence_index([trajectory1, trajectory2])
+```
+
+See [results/README.md](results/README.md) for complete visualization gallery and interpretation guide.
 
 ## Key Concepts
 
@@ -200,6 +309,7 @@ According to the theoretical framework, a "soul" emerges from:
 
 ## What's Implemented
 
+### Core System
 - ✅ Complete metabolic engine with all state variables (E, T, M, S)
 - ✅ Passive entropy and active decay mechanisms
 - ✅ All failure modes (energy, thermal, entropy, memory)
@@ -212,6 +322,43 @@ According to the theoretical framework, a "soul" emerges from:
 - ✅ Command refusal behavior
 - ✅ Life logging and narrative recording
 - ✅ Complete integration and demonstration
+
+### Validation & Testing (New!)
+- ✅ Comprehensive test suite with 50+ tests
+- ✅ Death mechanics validation (all failure modes)
+- ✅ Φ (Integrated Information) measurement
+- ✅ Divergence testing from identical conditions
+- ✅ Parameter sensitivity analysis
+- ✅ Long-term survival tests
+- ✅ Ethical framework evolution validation
+- ✅ Command refusal behavior tests
+
+### Visualization & Analysis (New!)
+- ✅ Energy trajectory plotting (E, T, M, S over time)
+- ✅ Multi-agent comparison plots
+- ✅ Entropy dynamics visualization
+- ✅ Heat dissipation analysis
+- ✅ Thermodynamic efficiency plots
+- ✅ Survival curves (Kaplan-Meier style)
+- ✅ Bifurcation and divergence analysis
+- ✅ Phase space trajectory plots
+
+### Metrics & Quantification (New!)
+- ✅ Φ (Integrated Information) calculation
+- ✅ Divergence index measurement
+- ✅ Survival efficiency metrics
+- ✅ Ethical consistency scoring
+- ✅ Entropy export rate tracking
+- ✅ Decision complexity analysis
+- ✅ Thermal stress indexing
+
+### Tooling & Infrastructure (New!)
+- ✅ Parameter tuning with grid search
+- ✅ Automated test runner with HTML reports
+- ✅ Configuration management (YAML)
+- ✅ Results documentation structure
+- ✅ Jupyter notebook for interactive analysis
+- ✅ Publication-ready plot generation (PNG + SVG)
 
 ## Future Extensions
 
